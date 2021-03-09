@@ -34,6 +34,9 @@ def meetup_ds_hamburg(url='https://www.meetup.com/Hamburg-Data-Science-Meetup/ev
         print(df)
         return df
 
-meetup_ds_hamburg()
+
+if __name__ == "__main__":
+    meetup_ds_hamburg()
+
 # meetup_ds_hamburg('https://www.meetup.com/datamadness-hamburg/events/')
 
