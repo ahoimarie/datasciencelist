@@ -16,8 +16,9 @@ def combine_sources():
     return df
 
 def save_df_to_md(df):
-    tbdf = tabulate.tabulate(df.values, df.columns, tablefmt="pipe")
-    print(tbdf)
+    # tbdf = tabulate.tabulate(df.values, df.columns, tablefmt="pipe")
+    # print(tbdf)
+    tbdf = df.to_markdown(tablefmt="grid")
 
     f = open("ds_events.md", "w")
     f.write(tbdf)
