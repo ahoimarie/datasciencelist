@@ -113,4 +113,4 @@ if __name__ == '__main__':
     # API_KEY = '00000000-0000-0000-0000-000000000000'
     # SECRET_KEY = '00000000-0000-0000-0000-000000000000'
     dfs = indico_requests()
-    print(dfs)
+    # print(dfs)
