@@ -8,19 +8,20 @@ import pandas as pd
 def meetup_ds_hamburg(url='https://www.meetup.com/Hamburg-Data-Science-Meetup/events/'):
     """ This is an event scraper for meetup events. Inputs are the event page URL and
     the output contains a dataframe with the next event of this meetup group. """
+    urlsep = url.split('/')
 
     res = requests.get(url)
     res.raise_for_status()
     noStarchSoup = bs4.BeautifulSoup(res.text, 'html.parser')
     type(noStarchSoup)
-    # elems = noStarchSoup.select('#eventCard-276438418 > div > div:nth-child(1) > div > div > div:nth-child(1)')
-    if not noStarchSoup.select('#mupMain > div.groupPageWrapper--child > div.child-wrapper > div > div > div > div.flex-item.flex-item--4 > div > div > ul > li') == None:
+    if not noStarchSoup.select(
+            '#mupMain > div.groupPageWrapper--child > div.child-wrapper > div > div > div > div.flex-item.flex-item--4 > div > div > ul > li') == None:
         # get the entire event card
-        elems = noStarchSoup.select('#mupMain > div.groupPageWrapper--child > div.child-wrapper > div > div > div > div.flex-item.flex-item--4 > div > div > ul > li')
+        elems = noStarchSoup.select(
+            '#mupMain > div.groupPageWrapper--child > div.child-wrapper > div > div > div > div.flex-item.flex-item--4 > div > div > ul > li')
         # print("----------------------------------------------------------------")
-        elemst = noStarchSoup.findAll('span', attrs = {'class': 'eventTimeDisplay-startDate'})
-        # elemst = noStarchSoup.findAll('span', {'class': ['eventTimeDisplay-startDate','eventCardHead--title']})
-        elemstitle = noStarchSoup.findAll('span', attrs = {'class' : 'visibility--a11yHide'})
+        elemst = noStarchSoup.findAll('span', attrs={'class': 'eventTimeDisplay-startDate'})
+        elemstitle = noStarchSoup.findAll('span', attrs={'class': 'visibility--a11yHide'})
         description = noStarchSoup.findAll('p', attrs={'class': 'text--small padding--top margin--halfBottom'})
         addr = noStarchSoup.findAll('address')
         datentime = elemst[0].getText()
@@ -29,14 +30,24 @@ def meetup_ds_hamburg(url='https://www.meetup.com/Hamburg-Data-Science-Meetup/ev
         # dates = dateRegex.findall(events)
         # times = re.findall(r'\s\d+\:\d\d\s[aAmMpP]+', events)
 
-        dfdict = {'Date and time': datentime, "title": elemstitle[0].getText(), "location": addr[0].getText(), "description": description[1].getText()}
+        aelem = noStarchSoup.findAll('a', attrs={'class': "eventCard--link" })
+        urle = aelem[0]['href'].split('/')
+        urles = url+urle[-2]
+
+        dfdict = {'Date and time': datentime, "title": elemstitle[0].getText(), "location": addr[0].getText(),
+                  "description": description[1].getText(), 'url': urles}
         df = pd.DataFrame(dfdict, index=[0])
         print(df)
         return df
 
 
+
+def combine_dfs():
+    return df
+
 if __name__ == "__main__":
     meetup_ds_hamburg()
+    # crawl_ahoi(url='https://ahoi.digital/aktuelle/')
 
 # meetup_ds_hamburg('https://www.meetup.com/datamadness-hamburg/events/')
 
