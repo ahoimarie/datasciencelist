@@ -29,7 +29,7 @@ def meetup_ds_hamburg(url='https://www.meetup.com/Hamburg-Data-Science-Meetup/ev
         # dates = dateRegex.findall(events)
         # times = re.findall(r'\s\d+\:\d\d\s[aAmMpP]+', events)
 
-        dfdict = {'Date and time': datentime, "title": elemstitle[0].getText(), "Location": addr[0].getText(), "description": description[1].getText()}
+        dfdict = {'Date and time': datentime, "title": elemstitle[0].getText(), "location": addr[0].getText(), "description": description[1].getText()}
         df = pd.DataFrame(dfdict, index=[0])
         print(df)
         return df
