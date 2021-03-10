@@ -3,7 +3,7 @@
 This is a repository that creates a list of seminars and talks on Data Science in Hamburg and relevant to the CDCS. The list is created using web-scraping and API requests. More events are added as further events re identified.  
 
 ## Current events
-[See here](/ds_events.md)
+[See here](/fetchevents/ds_events.md)
 
 ### Joint Data Science Colloquium
 Organised jointly by DASHH, CDCS, CUI/AIM, Quantum Universe, UHH Informatik, TUHH Mathematik and ahoi.digital

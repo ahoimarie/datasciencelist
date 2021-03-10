@@ -3,9 +3,9 @@
 # Created by nb18422 at 09/03/2021
 import tabulate
 
-from meetupcrawl import meetup_ds_hamburg
-from indico import indico_requests
-from scrapedyncontt import crawl_ahoi
+from fetchevents.meetupcrawl import meetup_ds_hamburg
+from fetchevents.indico import indico_requests
+from fetchevents.scrapedyncontt import crawl_ahoi
 import pandas as pd
 
 def combine_sources():
