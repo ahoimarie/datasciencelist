@@ -7,6 +7,7 @@ import hmac
 import time
 import requests
 import pandas as pd
+import bs4
 
 try:
     from urllib.parse import urlencode
@@ -77,11 +78,15 @@ def build_event_df(dfjs):
     df = pd.DataFrame(columns=['Date and time', 'title', 'location', 'description', 'url'])
 
     for i in range(len(dfjs["results"])):
-        datentime = dfjs["results"][i]["startDate"]
+        datentime = dfjs["results"][i]["startDate"]["date"] + ' ' + dfjs["results"][i]["startDate"]["time"][:5]
         addr = dfjs["results"][i]["location"]
         title = dfjs["results"][i]["title"]
         url = dfjs["results"][i]["url"]
-        description = dfjs["results"][i]["description"]
+
+        d1 = dfjs["results"][i]["description"]
+        description = bs4.BeautifulSoup(d1, "html.parser").text
+
+        # description = dfjs["results"][i]["description"]#.getText()
         df.loc[i] = [datentime, addr, title, description, url]
     return df
 
