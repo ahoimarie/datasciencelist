@@ -84,7 +84,7 @@ def build_event_df(dfjs):
         url = dfjs["results"][i]["url"]
 
         d1 = dfjs["results"][i]["description"]
-        description = bs4.BeautifulSoup(d1, "html.parser").text
+        description = bs4.BeautifulSoup(d1, "html.parser").text[:200]
 
         # description = dfjs["results"][i]["description"]#.getText()
         df.loc[i] = [datentime, addr, title, description, url]
