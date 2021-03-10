@@ -6,8 +6,6 @@ import hashlib
 import hmac
 import time
 import requests
-import urllib.request
-import json
 import pandas as pd
 
 try:
@@ -16,8 +14,21 @@ except ImportError:
     from urllib import urlencode
 
 
-
 def build_indico_request(path, params, api_key=None, secret_key=None, only_public=True, persistent=False):
+    """Building an indico request
+     Indico allows you to programmatically access the content of its database by exposing various information like category contents, events, rooms and room bookings through a web service, the HTTP Export API.
+    The basic URL looks like:
+    http://my.indico.server/export/WHAT/[LOC/]ID.TYPE?PARAMS&ak=KEY&timestamp=TS&signature=SIG
+    where:
+
+    WHAT    is the element you want to export (one of categ, event, room, reservation)
+    LOC     is the location of the element(s) specified by ID and only used for certain elements, for example, for the room booking (https://indico.server/export/room/CERN/120.json?ak=0…)
+    ID      is the ID of the element you want to export (can be a - separated list). As for example, the 120 in the above URL.
+    TYPE    is the output format (one of json, jsonp, xml, html, ics, atom, bin)
+    PARAMS  are various parameters affecting (filtering, sorting, …) the result list
+    KEY, TS, SIG are part of the API Authentication.
+    https://docs.getindico.io/en/stable/http_api/access/ """
+
     items = list(params.items()) if hasattr(params, 'items') else list(params)
     if api_key:
         items.append(('apikey', api_key))
@@ -36,24 +47,18 @@ def build_indico_request(path, params, api_key=None, secret_key=None, only_publi
     return '%s?%s' % (path, urlencode(items))
 
 
-def parse_json(url):
-    res = urllib.request.urlopen(url)
-    # res = requests.get(url)
-    # res.raise_for_status()
-    jdata = []
-    for line in json.loads(res.read()):
-        jline = json.loads(line.read())
-        jdata.append(jline)
-    # y = json.loads(res.read())
-    # print(y)
-    return jdata
-
 def parse_jsonreq(url):
+    """We will parse JSON response into Python Dictionary so you can access JSON
+    data using key-value pairs. Also, you can prettyPrint JSON in the readable format.
+    The requests module provides a builtin JSON decoder, we can use it when we are dealing
+    with JSON data. Just execute response.json(), and that’s it. response.json() returns a JSON
+    response in Python dictionary format so we can access JSON using key-value pairs.
+    https://pynative.com/parse-json-response-using-python-requests-library/"""
     from requests.exceptions import HTTPError
     try:
         response = requests.get(url)
         response.raise_for_status()
-        # access JSOn content
+        # access JSON content
         jsonResponse = response.json()
         print("Entire JSON response")
         # print(jsonResponse)
@@ -63,14 +68,15 @@ def parse_jsonreq(url):
     except Exception as err:
         print(f'Other error occurred: {err}')
 
-    return jsonResponse #.items()
+    return jsonResponse
+
 
 def build_event_df(dfjs):
+    """Build a pandas event dataframe from the returned JSON dictionary."""
 
     df = pd.DataFrame(columns=['Date and time', 'title', 'location', 'description', 'url'])
 
     for i in range(len(dfjs["results"])):
-        # print(dfjs["results"][i])
         datentime = dfjs["results"][i]["startDate"]
         addr = dfjs["results"][i]["location"]
         title = dfjs["results"][i]["title"]
@@ -80,11 +86,14 @@ def build_event_df(dfjs):
     return df
 
 
-if __name__ == '__main__':
-    # API_KEY = '00000000-0000-0000-0000-000000000000'
-    # SECRET_KEY = '00000000-0000-0000-0000-000000000000'
-    # PATH = '/export/categ/1337.json'  127
-    PATH = 'https://indico.desy.de/export/categ/662.json'#?from=today&to=30d10h&pretty=yes'
+def indico_requests(categories=[662, 127, 776, 740, 294, 193, 641, 810, 807, 647]):
+    """Loop through a list of categories to retrieve events from today plus 60 days in the future
+    on the DESY indico website.
+    This function takes as input a list of ints corresponding to the DESY indico category numbers.
+    For example, https://indico.desy.de/category/807/ would be the CDCS seminar category of
+    number 807. If no inputs are given, the default categories are searched through.
+    Finally, the events are combined into one event dataframe. """
+    df = pd.DataFrame(columns=['Date and time', 'title', 'location', 'description', 'url'])
     PARAMS = {
         'limit': 123,
         'from': 'today',
@@ -92,6 +101,16 @@ if __name__ == '__main__':
         'pretty': 'yes'
     }
 
-    dfjs = parse_jsonreq(build_indico_request(PATH, PARAMS))
-    df = build_event_df(dfjs)
-    print(df)
+    for cat in categories:
+        PATH = 'https://indico.desy.de/export/categ/' + str(cat) + '.json'
+        dfjs = parse_jsonreq(build_indico_request(PATH, PARAMS))
+        dfnew = build_event_df(dfjs)
+        df = pd.concat([df, dfnew]).reset_index(drop=True)
+    return df
+
+
+if __name__ == '__main__':
+    # API_KEY = '00000000-0000-0000-0000-000000000000'
+    # SECRET_KEY = '00000000-0000-0000-0000-000000000000'
+    dfs = indico_requests()
+    print(dfs)
