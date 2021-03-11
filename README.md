@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/ahoimarie/datasciencelist.svg?branch=master)](https://travis-ci.com/ahoimarie/datasciencelist)
+[![Build Status](https://travis-ci.com/ahoimarie/datasciencelist.svg?branch=main)](https://travis-ci.com/ahoimarie/datasciencelist)
 
 # Data Science events in Hamburg 
 
