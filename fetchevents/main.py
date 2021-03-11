@@ -15,12 +15,12 @@ def combine_sources():
     df = pd.concat([df1,df2,df3]).reset_index(drop=True)
     return df
 
-def save_df_to_md(df):
+def save_df_to_md(df, filename = "ds_events.md", overwrite = "w"):
     tbdf = tabulate.tabulate(df.values, df.columns, tablefmt="pipe")
     # print(tbdf)
     # tbdf = df.to_markdown()
-    print(tbdf)
-    f = open("ds_events.md", "w")
+    # print(tbdf)
+    f = open(filename, overwrite)
     f.write(tbdf)
     f.close()
     return None
