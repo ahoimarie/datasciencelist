@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/ahoimarie/datasciencelist.svg?branch=master)](https://travis-ci.com/ahoimarie/datasciencelist)
+
 # Data Science events in Hamburg 
 
 This is a repository that creates a list of seminars and talks on Data Science in Hamburg and relevant to the CDCS. The list is created using web-scraping and API requests. More events are added as further events re identified.  
@@ -16,7 +18,6 @@ Notifications/video conference addresses sent to DASHH scientists.
 https://www.dashh.org/events/phd_seminars/index_eng.html
 
 ### DESY IT Machine Learning Seminar
-Email desy-ml@desy.de to sign up for annoucements.
 https://indico.desy.de/category/641/
 
 ### Intelligent Process Control Seminar

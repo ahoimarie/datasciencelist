@@ -15,7 +15,7 @@ def combine_sources():
     df = pd.concat([df1,df2,df3]).reset_index(drop=True)
     return df
 
-def save_df_to_md(df, filename = "ds_events.md", overwrite = "w"):
+def save_df_to_md(df, filename = "./fetchevents/ds_events.md", overwrite = "w"):
     tbdf = tabulate.tabulate(df.values, df.columns, tablefmt="pipe")
     # print(tbdf)
     # tbdf = df.to_markdown()
