@@ -19,11 +19,11 @@ def test_save_df_to_md():
     # rel_path = 'testfiles'
     # FILEPATH = os.path.join(script_dir, rel_path)
     # print(FILEPATH)
-    save_df_to_md(df, "testfiles/testfile.md")
+    save_df_to_md(df, "./tests/testfiles/testfile.md")
     import filecmp
-    filecmp.cmp('testfiles/testfile.md', 'testfiles/valifile.md')
+    # filecmp.cmp('./tests/testfiles/testfile.md', './tests/testfiles/valifile.md')
 
-    assert(filecmp.cmp('testfiles/testfile.md', 'testfiles/valifile.md'))
+    assert(filecmp.cmp('./tests/testfiles/testfile.md', './tests/testfiles/valifile.md'))
 
 
 if __name__ == "__main__":
