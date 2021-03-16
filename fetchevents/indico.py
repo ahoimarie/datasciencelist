@@ -91,7 +91,7 @@ def build_event_df(dfjs):
     return df
 
 
-def indico_requests(categories=[662, 127, 776, 740, 294, 193, 641, 810, 807, 647]):
+def indico_requests(categories=[662, 127, 776, 740, 294, 295, 193, 641, 810, 807, 647]):
     """Loop through a list of categories to retrieve events from today plus 60 days in the future
     on the DESY indico website.
     This function takes as input a list of ints corresponding to the DESY indico category numbers.
