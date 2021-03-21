@@ -34,7 +34,7 @@ def meetup_ds_hamburg(url='https://www.meetup.com/Hamburg-Data-Science-Meetup/ev
         urle = aelem[0]['href'].split('/')
         urles = url+urle[-2]
 
-        dfdict = {'Date and time': datentime, "title": elemstitle[0].getText(), "location": addr[0].getText(),
+        dfdict = {'Date and time': datentime, "time": datentime,"title": elemstitle[0].getText(), "location": addr[0].getText(),
                   "description": description[1].getText(), 'url': urles}
         df = pd.DataFrame(dfdict, index=[0])
         print(df)

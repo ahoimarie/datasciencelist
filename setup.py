@@ -27,7 +27,7 @@ setup(
    version='0.1',
    license="GPL-2.0 License",
    long_description=readme,
-   description='Fetch Data Science events in Hamburg and create list.',
+   description='Fetch Data Science eventscraperdj in Hamburg and create list.',
    author='Marie Tolkiehn',
    author_email='marie+git@kent.nu',
    packages=find_packages(exclude=('tests',)),

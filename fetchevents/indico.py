@@ -78,7 +78,8 @@ def build_event_df(dfjs):
     df = pd.DataFrame(columns=['Date and time', 'title', 'location', 'description', 'url'])
 
     for i in range(len(dfjs["results"])):
-        datentime = dfjs["results"][i]["startDate"]["date"] + ' ' + dfjs["results"][i]["startDate"]["time"][:5]
+        date = dfjs["results"][i]["startDate"]["date"]
+        times = dfjs["results"][i]["startDate"]["time"][:5]
         addr = dfjs["results"][i]["location"]
         title = dfjs["results"][i]["title"]
         url = dfjs["results"][i]["url"]
@@ -87,7 +88,7 @@ def build_event_df(dfjs):
         description = bs4.BeautifulSoup(d1, "html.parser").text[:300]
 
         # description = dfjs["results"][i]["description"]#.getText()
-        df.loc[i] = [datentime, title, addr, description, url]
+        df.loc[i] = [date, times, title, addr, description, url]
     return df
 
 

@@ -53,7 +53,7 @@ def crawl_ahoi(url='https://ahoi.digital/aktuelle/'):
         dateRegex = re.compile(r'\d\d.\d\d.\d\d\d\d')
         datentime = dateRegex.findall(elemst[0].getText())
 
-        dfdict = {'Date and time': datentime[0], "title": elemstitle, "location": addr, "description": description, "url": urle}
+        dfdict = {'Date': datentime[0], "time": datentime[0], "title": elemstitle, "location": addr, "description": description, "url": urle}
         df = pd.DataFrame(dfdict, index=[0])
         print(df)
         return df
