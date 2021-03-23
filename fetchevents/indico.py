@@ -75,19 +75,20 @@ def parse_jsonreq(url):
 def build_event_df(dfjs):
     """Build a pandas event dataframe from the returned JSON dictionary."""
 
-    df = pd.DataFrame(columns=['Date and time', 'title', 'location', 'description', 'url'])
+    df = pd.DataFrame(columns=['date', 'time', 'title', 'location', 'description', 'url'])
 
     for i in range(len(dfjs["results"])):
-        datentime = dfjs["results"][i]["startDate"]["date"] + ' ' + dfjs["results"][i]["startDate"]["time"][:5]
+        date = dfjs["results"][i]["startDate"]["date"]
+        times = dfjs["results"][i]["startDate"]["time"][:5]
         addr = dfjs["results"][i]["location"]
         title = dfjs["results"][i]["title"]
         url = dfjs["results"][i]["url"]
 
         d1 = dfjs["results"][i]["description"]
-        description = bs4.BeautifulSoup(d1, "html.parser").text[:300]
+        description = bs4.BeautifulSoup(d1, "html.parser").text[:500]
 
         # description = dfjs["results"][i]["description"]#.getText()
-        df.loc[i] = [datentime, title, addr, description, url]
+        df.loc[i] = [date, times, title, addr, description, url]
     return df
 
 
@@ -98,7 +99,7 @@ def indico_requests(categories=[662, 127, 776, 740, 294, 295, 193, 641, 810, 807
     For example, https://indico.desy.de/category/807/ would be the CDCS seminar category of
     number 807. If no inputs are given, the default categories are searched through.
     Finally, the events are combined into one event dataframe. """
-    df = pd.DataFrame(columns=['Date and time', 'title', 'location', 'description', 'url'])
+    df = pd.DataFrame(columns=['date', 'time', 'title', 'location', 'description', 'url'])
     PARAMS = {
         'limit': 123,
         'from': 'today',

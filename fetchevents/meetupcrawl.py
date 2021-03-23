@@ -27,14 +27,23 @@ def meetup_ds_hamburg(url='https://www.meetup.com/Hamburg-Data-Science-Meetup/ev
         datentime = elemst[0].getText()
 
         # dateRegex = re.compile(r'\s(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s\d\d\,')
-        # dates = dateRegex.findall(events)
-        # times = re.findall(r'\s\d+\:\d\d\s[aAmMpP]+', events)
+        # dates = dateRegex.findall(datentime)
+        # import datefinder
+        # matches = list(datefinder.find_dates(datentime))
+        # # time = re.findall(r'\s\d+\:\d\d\s[aAmMpP]+', datentime)
+        #
+        # d = {'DateTime': [matches[0]]}
+        # df1 = pd.DataFrame(data=d)
+        # date = df1['DateTime'].dt.strftime('%Y-%m-%d')
+        # time = df1['DateTime'].dt.strftime('%H:%M')
+        from .helper import split_datetime
+        date,time = split_datetime(elemst[0].getText())
 
         aelem = noStarchSoup.findAll('a', attrs={'class': "eventCard--link" })
         urle = aelem[0]['href'].split('/')
         urles = url+urle[-2]
 
-        dfdict = {'Date and time': datentime, "title": elemstitle[0].getText(), "location": addr[0].getText(),
+        dfdict = {'date': date, "time": time,"title": elemstitle[0].getText(), "location": addr[0].getText(),
                   "description": description[1].getText(), 'url': urles}
         df = pd.DataFrame(dfdict, index=[0])
         print(df)
