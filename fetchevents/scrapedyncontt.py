@@ -47,15 +47,19 @@ def crawl_ahoi(url='https://ahoi.digital/aktuelle/'):
         #     for tag in tdTags:
         #         print(tag.text)
 
-        addr = 'N/A'# No address or time is given
+        addr = 'N/A'# No address is given
         urle = elemst[0].find("a", attrs={'href': re.compile("^https://")}).get('href')
 
-        dateRegex = re.compile(r'\d\d.\d\d.\d\d\d\d')
-        datentime = dateRegex.findall(elemst[0].getText())
+        # dateRegex = re.compile(r'\d\d.\d\d.\d\d\d\d')
+        # datentime = dateRegex.findall(elemst[0].getText())
 
-        dfdict = {'Date': datentime[0], "time": datentime[0], "title": elemstitle, "location": addr, "description": description, "url": urle}
+        from .helper import split_datetime
+        date,time = split_datetime(elemst[0].getText())
+
+        dfdict = {'date': date, "time": time, "title": elemstitle, "location": addr, "description": description, "url": urle}
         df = pd.DataFrame(dfdict, index=[0])
         print(df)
+        driver.close()
         return df
 
 
