@@ -56,6 +56,7 @@ def combine_dfs():
 
 if __name__ == "__main__":
     meetup_ds_hamburg()
+    # meetup_ds_hamburg(url='https://www.meetup.com/ARIC-Brown-Bag-Sessions/events/')
     # crawl_ahoi(url='https://ahoi.digital/aktuelle/')
 
 # meetup_ds_hamburg('https://www.meetup.com/datamadness-hamburg/events/')
