@@ -1,0 +1,25 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Events</title>
+      <link rel="stylesheet" href="{% static 'styles.css' %}">
+  </head>
+  <body>
+    <header class="wrapper">
+        <h1><a href="{% url 'home' %}"><img src="{% static 'cdcs_wordmark.png' %}" alt="Logo"></a></h1>
+        <nav>
+            <ul>
+                    <li><a href="{% url 'events:update' %}" class="highlight">Update List</a></li>
+            </ul>
+        </nav>
+    </header>
+      <div class="wrapper">
+          {% block content %}
+          {% endblock %}
+      </div>
+
+  </body>
+</html>
