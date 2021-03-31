@@ -1,4 +1,4 @@
-{% load static %}
+{#{% load static %}#}
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -12,7 +12,7 @@
         <h1><a href="{% url 'home' %}"><img src="{% static 'cdcs_wordmark.png' %}" alt="Logo"></a></h1>
         <nav>
             <ul>
-                    <li><a href="{% url 'events:update' %}" class="highlight">Update List</a></li>
+{#                    <li><a href="{% url 'events:update' %}" class="highlight">Update List</a></li>#}
             </ul>
         </nav>
     </header>
@@ -26,7 +26,6 @@
 
                     <p>{{ event.body|truncatechars:300 }}</p>
                         <p><a href="{{ event.url }}">{{ event.url }}</a></p>
-        {#            <p>{{ event.snippet }}</p>#}
                     <p>{{ event.date |date:"d M Y" }}</p>
                     <p>{{ event.time |time:"H:i"}} h</p>
                     </div>
