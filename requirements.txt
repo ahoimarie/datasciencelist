@@ -27,7 +27,7 @@ soupsieve==2.2
 tabulate==0.8.9
 toml==0.10.2
 typing-extensions==3.7.4.3
-urllib3==1.26.3
+urllib3==1.26.4
 wcwidth==0.2.5
 webdriver-manager==3.3.0
 zipp==3.4.1
