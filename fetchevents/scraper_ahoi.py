@@ -6,6 +6,7 @@ import requests, bs4, re
 import pandas as pd
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
@@ -37,13 +38,16 @@ def crawl_ai(url='https://ai.hamburg/en/events/', evnum = 3): #'https://ai.hambu
     #     print("no alert to accept")
 
 
-    # Get the page and extract the clock WebElement
+    # Get the page and extract the popup Element
     driver.get(url)
     driver.implicitly_wait(5)
-    element = driver.find_element_by_class_name('wmpci-popup-close')
+    try:
+        element = driver.find_element_by_class_name('wmpci-popup-close')
     # element.is_displayed()
 
-    driver.execute_script("arguments[0].click();", element)
+        driver.execute_script("arguments[0].click();", element)
+    except NoSuchElementException:
+        pass
 
     # actions = ActionChains(driver)
     # actions.move_to_element(element).perform()
@@ -57,6 +61,9 @@ def crawl_ai(url='https://ai.hamburg/en/events/', evnum = 3): #'https://ai.hambu
         # elems = noStarchSoup.select('elementor-tab-content-1642')
         # print("----------------------------------------------------------------")
         elemst = noStarchSoup.findAll('div', attrs = {'class': 'card h-100'})
+        # Select all Event cards on the site
+        if evnum > len(elemst):
+            evnum = len(elemst)
 
         df = pd.DataFrame(columns=['date', 'time', 'title', 'location', 'description', 'url'])
 
@@ -70,23 +77,22 @@ def crawl_ai(url='https://ai.hamburg/en/events/', evnum = 3): #'https://ai.hambu
             driver.implicitly_wait(5)
             driver.execute_script("arguments[0].click();", eventelem)
 
-            # driver.execute_script("arguments[0].click();", WebDriverWait(driver, 3).until(
-            #     EC.element_to_be_clickable(eventelem)))
 
-            # driver.execute_script("arguments[0].click();", WebDriverWait(driver, 5).until(
-            #     EC.element_to_be_clickable((By.CLASS_NAME, "card-link"))))
-            # driver.find_elements_by_class_name('card-link')[.click()
-
+            # if it opens in new window:
+            if len(driver.window_handles)>1:
             # Change browser window to new window after
-            window_after = driver.window_handles[1]
-            driver.switch_to.window(window_after)
+                window_after = driver.window_handles[1]
+                driver.switch_to.window(window_after)
 
             eventSoup = bs4.BeautifulSoup(driver.page_source, 'html.parser')
             eventbody = eventSoup.findAll('div', attrs = {'class': 'caption'})
 
             body = ''.join([x.getText() for x in eventbody[0].find_all("p")[2:]])
-            driver.close()
-            driver.switch_to.window(driver.window_handles[0])
+            if len(driver.window_handles) > 1:
+                driver.close()
+                driver.switch_to.window(driver.window_handles[0])
+            else:
+                driver.back()
 
             addr = 'N/A'# No address or time is given
             urle = elemst[i].find("a", attrs={'href': re.compile("^https://")}).get('href')
@@ -108,4 +114,4 @@ def crawl_ai(url='https://ai.hamburg/en/events/', evnum = 3): #'https://ai.hambu
 
 
 if __name__ == "__main__":
-    crawl_ai(url='https://ai.hamburg/en/events/', evnum=3)
+    crawl_ai(url='https://ai.hamburg/en/events/', evnum=12)

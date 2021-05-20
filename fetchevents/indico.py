@@ -92,9 +92,10 @@ def build_event_df(dfjs):
     return df
 
 
-def indico_requests(categories=[662, 127, 776, 740, 294, 295, 193, 641, 810, 807, 647]):
+def indico_requests(categories=[127, 193, 294, 641, 647, 662, 740, 776, 807, 810, 834]):
     """Loop through a list of categories to retrieve events from today plus 60 days in the future
     on the DESY indico website.
+    Include PIER: 295
     This function takes as input a list of ints corresponding to the DESY indico category numbers.
     For example, https://indico.desy.de/category/807/ would be the CDCS seminar category of
     number 807. If no inputs are given, the default categories are searched through.
@@ -120,3 +121,6 @@ if __name__ == '__main__':
     # SECRET_KEY = '00000000-0000-0000-0000-000000000000'
     dfs = indico_requests()
     # print(dfs)
+
+
+    #Cambridge123

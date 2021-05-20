@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Events</title>
+      <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <header class="wrapper">
+        <h1><a href="{% url 'home' %}"><img src="{% static 'cdcs_wordmark.png' %}" alt="Logo"></a></h1>
+        <nav>
+            <ul>
+            </ul>
+        </nav>
+    </header>
+      <div class="wrapper">
+
+            <h1>Hamburg Data Science Events List</h1>
+            <script>
+                window.data = {{data|default:"{}"|safe}};
+            </script>
+
+            <p>Welcome to the Data Science Events list. Click on update list to update the list (this might take a while). </p>
+
+
+      </div>
+
+  </body>
+</html>
