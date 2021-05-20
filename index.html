@@ -1,41 +1,29 @@
-{#{% load static %}#}
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title>Events</title>
-      <link rel="stylesheet" href="/assets/styles.css">
+      <link rel="stylesheet" href="assets/styles.css">
   </head>
   <body>
     <header class="wrapper">
         <h1><a href="{% url 'home' %}"><img src="{% static 'cdcs_wordmark.png' %}" alt="Logo"></a></h1>
         <nav>
             <ul>
-{#                    <li><a href="{% url 'events:update' %}" class="highlight">Update List</a></li>#}
             </ul>
         </nav>
     </header>
       <div class="wrapper">
 
             <h1>Hamburg Data Science Events List</h1>
-            <div class="events">
-                {% for event in events%}
-                    <div class="event">
-                    <h2><a href="{% url 'events:detail' event.slug %}">{{ event.title }}</a></h2>
-
-                    <p>{{ event.body|truncatechars:300 }}</p>
-                        <p><a href="{{ event.url }}">{{ event.url }}</a></p>
-                    <p>{{ event.date |date:"d M Y" }}</p>
-                    <p>{{ event.time |time:"H:i"}} h</p>
-                    </div>
-                {% endfor %}
-            </div>
+            <script>
+                window.data = {{data|default:"{}"|safe}};
+            </script>
 
             <p>Welcome to the Data Science Events list. Click on update list to update the list (this might take a while). </p>
 
-          {% block content %}
-          {% endblock %}
+
       </div>
 
   </body>
