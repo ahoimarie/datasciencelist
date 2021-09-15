@@ -49,6 +49,11 @@ def crawl_ai(url='https://ai.hamburg/en/events/', evnum = 3): #'https://ai.hambu
     except NoSuchElementException:
         pass
 
+    try:
+        element = driver.find_element_by_class_name('pum-close popmake-close')
+        driver.execute_script("arguments[0].click();", element)
+    except NoSuchElementException:
+        pass
     # actions = ActionChains(driver)
     # actions.move_to_element(element).perform()
     # driver.execute_script("arguments[0].scrollIntoView();", element)
@@ -101,9 +106,17 @@ def crawl_ai(url='https://ai.hamburg/en/events/', evnum = 3): #'https://ai.hambu
             # datentime = dateRegex.findall(elemst[0].getText())
 
             from .helper import split_datetime
-            date,_ = split_datetime(elemst[i].getText())
-            dateRegex = re.compile(r'\d\d:\d\d')
-            time = dateRegex.findall(elemst[i].getText())[0]
+            date,time = split_datetime(elemst[i].getText())
+            if date is None:
+                continue
+            else:
+                dateRegex = re.compile(r'\d\d:\d\d')
+                time_tmp = dateRegex.findall(elemst[i].getText())
+                if not time_tmp:
+                    time = '00:00'
+                else:
+                    time = time_tmp[0]
+
 
             df.loc[i] = [date.to_list()[0], time, title, addr, body, urle]
 
