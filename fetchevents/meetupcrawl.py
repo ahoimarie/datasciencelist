@@ -21,10 +21,14 @@ def meetup_ds_hamburg(url='https://www.meetup.com/Hamburg-Data-Science-Meetup/ev
             '#mupMain > div.groupPageWrapper--child > div.child-wrapper > div > div > div > div.flex-item.flex-item--4 > div > div > ul > li')
         # print("----------------------------------------------------------------")
         elemst = noStarchSoup.findAll('span', attrs={'class': 'eventTimeDisplay-startDate'})
+        if not elemst:
+            return None
+
         elemstitle = noStarchSoup.findAll('span', attrs={'class': 'visibility--a11yHide'})
         description = noStarchSoup.findAll('p', attrs={'class': 'text--small padding--top margin--halfBottom'})
         addr = noStarchSoup.findAll('address')
-        datentime = elemst[0].getText()
+        locat = addr[0].getText() if len(addr) > 0 else 'N/A' #First entry of the address field
+        # datentime = elemst[0].getText()
 
         # dateRegex = re.compile(r'\s(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s\d\d\,')
         # dates = dateRegex.findall(datentime)
@@ -36,14 +40,14 @@ def meetup_ds_hamburg(url='https://www.meetup.com/Hamburg-Data-Science-Meetup/ev
         # df1 = pd.DataFrame(data=d)
         # date = df1['DateTime'].dt.strftime('%Y-%m-%d')
         # time = df1['DateTime'].dt.strftime('%H:%M')
-        from .helper import split_datetime
+        from fetchevents.helper import split_datetime #TODO .helper import split_datetime
         date,time = split_datetime(elemst[0].getText())
 
         aelem = noStarchSoup.findAll('a', attrs={'class': "eventCard--link" })
         urle = aelem[0]['href'].split('/')
         urles = url+urle[-2]
 
-        dfdict = {'date': date, "time": time,"title": elemstitle[0].getText(), "location": addr[0].getText(),
+        dfdict = {'date': date, "time": time,"title": elemstitle[0].getText(), "location": locat,
                   "description": description[1].getText(), 'url': urles}
         df = pd.DataFrame(dfdict, index=[0])
         print(df)

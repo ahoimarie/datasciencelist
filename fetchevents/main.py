@@ -12,10 +12,10 @@ import pandas as pd
 def combine_sources():
     df1 = meetup_ds_hamburg()
     df2 = indico_requests()
-    df3 = crawl_ahoi()
+    # df3 = crawl_ahoi()
     df4 = crawl_ai()
-    df5 = meetup_ds_hamburg(url='https://www.meetup.com/ARIC-Brown-Bag-Sessions/events/')
-    df = pd.concat([df1,df2,df3,df4,df5]).reset_index(drop=True)
+    df5 = meetup_ds_hamburg(url='https://www.meetup.com/de-DE/artificial-intelligence-center-hamburg-workshops-events/events/')
+    df = pd.concat([df1,df2,df4,df5]).reset_index(drop=True)
     return df
 
 def save_df_to_md(df, filename = "./fetchevents/ds_events.md", overwrite = "w"):
@@ -35,3 +35,4 @@ if __name__ == "__main__":
     print(df)
     # df.to_html('ds_events.html')
     save_df_to_md(df,filename = "ds_events.md")
+
